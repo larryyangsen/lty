@@ -1,22 +1,24 @@
 {
-  "name": "ytc",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "fluent-ffmpeg": "^2.1.2",
-    "speaker": "^0.4.1",
-    "ytdl-core": "^0.29.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.3"
-  }
+    "name": "lty",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "babel index.js -d dist"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "fluent-ffmpeg": "^2.1.2",
+        "speaker": "^0.4.1",
+        "ytdl-core": "^0.29.1"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.4.3",
+        "@babel/core": "^7.4.3",
+        "@babel/node": "^7.2.2",
+        "@babel/preset-env": "^7.4.3"
+    }
 }

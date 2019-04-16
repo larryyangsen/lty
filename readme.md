@@ -5,4 +5,5 @@
 ## Run
 
 1.  npm install
-2.  npx babel-node index.js https://www.youtube.com/watch?v=mXRfApkMYZU
+2.  npm run build
+3.  node dist https://www.youtube.com/watch?v=mXRfApkMYZU
