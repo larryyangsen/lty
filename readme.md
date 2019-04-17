@@ -8,4 +8,4 @@ Let's listen youtube on terminal
 
 1.  npm install
 2.  npm run build
-3.  node dist https://www.youtube.com/watch?v=mXRfApkMYZU
+3.  node dist 87VUC4J_0Ps y2nWIwmM8Y0

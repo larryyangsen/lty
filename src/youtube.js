@@ -2,12 +2,12 @@ import ytdl from 'ytdl-core';
 const ytdlOption = {
     liveBuffer: 10000
 };
-export default async (url = '') => {
-    if (!ytdl.validateURL(url)) {
-        console.warn('not validated youtube url');
-        return {};
+export default async (str = '') => {
+    if (ytdl.validateURL(str) || ytdl.validateID(str)) {
+        const info = await ytdl.getBasicInfo(str);
+        const video = ytdl(str, ytdlOption);
+        return { info, video };
     }
-    const info = await ytdl.getBasicInfo(url);
-    const video = ytdl(url, ytdlOption);
-    return { info, video };
+    console.warn('not validated url or id');
+    return {};
 };

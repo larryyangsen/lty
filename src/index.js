@@ -2,39 +2,48 @@ import Video from './youtube';
 import FFmpeg from './ffmpeg';
 import Speaker from './speaker';
 
-const url = process.argv[2] || 'https://www.youtube.com/watch?v=mXRfApkMYZU';
-(async () => {
-    const play = (url = '') =>
-        new Promise(async (resolve, reject) => {
-            const { info, video } = await Video(url);
-            if (!video) {
-                reject();
-                return;
-            }
-            console.log(`Now Playing ${info.title}`);
-            const audio = Speaker();
-            const ffmpeg = FFmpeg(video);
-            ffmpeg.pipe(audio);
+const play = (url = '') =>
+    new Promise(async (resolve, reject) => {
+        const { info, video } = await Video(url);
 
-            video.on('error', e => {
-                reject(e);
-                return;
-            });
-            ffmpeg.on('error', e => {
-                reject(e);
-                return;
-            });
+        if (!video) {
+            reject();
+            return;
+        }
+        console.log(`Now Playing ${info.title}`);
+        const ffmpeg = FFmpeg(video, info.length_seconds);
+        const audio = Speaker();
+        ffmpeg.pipe(audio);
 
-            ffmpeg.on('end', () => {
-                resolve();
-                audio.speaker.close();
-                return;
-            });
+        video.on('error', e => {
+            reject(e);
+            return;
         });
 
-    try {
-        await play(url);
-    } catch (error) {
-        console.log(error);
+        ffmpeg.on('error', e => {
+            reject(e);
+            return;
+        });
+
+        ffmpeg.on('end', () => {
+            resolve();
+            audio.speaker.close();
+        });
+    });
+
+const main = async () => {
+    const [, , ...urls] = process.argv;
+    if (!urls.length) {
+        urls.push('y2nWIwmM8Y0');
     }
-})();
+    for (const str of urls) {
+        console.log(str);
+        try {
+            await play(str);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+main();
