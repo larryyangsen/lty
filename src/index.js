@@ -14,7 +14,6 @@ const play = (url = '') =>
         const ffmpeg = FFmpeg(video, info.length_seconds);
         const audio = Speaker();
         ffmpeg.pipe(audio);
-
         video.on('error', e => {
             reject(e);
             return;
@@ -26,8 +25,8 @@ const play = (url = '') =>
         });
 
         ffmpeg.on('end', () => {
-            resolve();
             audio.speaker.close();
+            resolve();
         });
     });
 
