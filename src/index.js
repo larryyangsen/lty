@@ -10,9 +10,12 @@ const play = (url = '') =>
             reject();
             return;
         }
-        console.log(`Now Playing ${info.title}`);
-        const ffmpeg = FFmpeg(video, info.length_seconds);
+        const duration = +info.length_seconds;
+        const ffmpeg = FFmpeg(video, duration);
         const audio = Speaker();
+        console.log(
+            `Now Playing ${duration === 0 && 'live video'} ${info.title}`
+        );
         ffmpeg.pipe(audio);
         video.on('error', e => {
             reject(e);
