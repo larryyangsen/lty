@@ -1,6 +1,6 @@
 import FFmpeg from 'fluent-ffmpeg';
 
-export default (input, duration, onStart, onError) => {
+export default (input, duration, onEnd, onError) => {
     const ffmpeg = new FFmpeg(input)
         .audioChannels(1)
         .audioFrequency(192000)
@@ -11,8 +11,8 @@ export default (input, duration, onStart, onError) => {
     if (duration !== 0) {
         ffmpeg.duration(duration);
     }
-    if (typeof onStart === 'function') {
-        ffmpeg.once('progress', onStart);
+    if (typeof onEnd === 'function') {
+        ffmpeg.on('end', onEnd);
     }
     if (typeof onError === 'function') {
         ffmpeg.on('error', onError);

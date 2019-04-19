@@ -14,18 +14,14 @@ const play = (url = '') =>
         const duration = +info.length_seconds;
         const speaker = Speaker();
         const stream = new Through2();
-        const onFFmpegStart = () => {
-            if (duration !== 0) {
-                const timeout = setTimeout(() => {
-                    speaker.close();
-                    clearTimeout(timeout);
-                    stream.destroy();
-                    resolve();
-                }, (duration + 1) * 1000);
-            }
+        const onEnd = () => {
+            speaker.close();
+            stream.destroy();
+            resolve();
         };
         const onFFmpegError = e => reject(e);
-        const ffmpeg = FFmpeg(video, duration, onFFmpegStart, onFFmpegError);
+        const ffmpeg = FFmpeg(video, duration, onEnd, onFFmpegError);
+
         console.log(
             `Now Playing ${duration === 0 ? 'live video' : ''} ${info.title}`
         );
