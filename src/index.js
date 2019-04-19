@@ -1,3 +1,4 @@
+import Through2 from 'through2';
 import Video from './youtube';
 import FFmpeg from './ffmpeg';
 import Speaker from './speaker';
@@ -11,25 +12,29 @@ const play = (url = '') =>
             return;
         }
         const duration = +info.length_seconds;
-        const ffmpeg = FFmpeg(video, duration);
-        const audio = Speaker();
+        const speaker = Speaker();
+        const stream = new Through2();
+        const onFFmpegStart = () => {
+            if (duration !== 0) {
+                const timeout = setTimeout(() => {
+                    speaker.close();
+                    clearTimeout(timeout);
+                    stream.destroy();
+                    resolve();
+                }, (duration + 1) * 1000);
+            }
+        };
+        const onFFmpegError = e => reject(e);
+        const ffmpeg = FFmpeg(video, duration, onFFmpegStart, onFFmpegError);
         console.log(
-            `Now Playing ${duration === 0 && 'live video'} ${info.title}`
+            `Now Playing ${duration === 0 ? 'live video' : ''} ${info.title}`
         );
-        ffmpeg.pipe(audio);
+        // console.log(duration);
+        ffmpeg.pipe(stream);
+        stream.pipe(speaker);
         video.on('error', e => {
+            console.log(e.message);
             reject(e);
-            return;
-        });
-
-        ffmpeg.on('error', e => {
-            reject(e);
-            return;
-        });
-
-        ffmpeg.on('end', () => {
-            audio.speaker.close();
-            resolve();
         });
     });
 
@@ -38,12 +43,14 @@ const main = async () => {
     if (!urls.length) {
         urls.push('y2nWIwmM8Y0');
     }
-    for (const str of urls) {
-        console.log(str);
-        try {
-            await play(str);
-        } catch (error) {
-            console.log(error);
+    while (1) {
+        for (const str of urls) {
+            console.log(str);
+            try {
+                await play(str);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 };

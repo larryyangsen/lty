@@ -1,7 +1,7 @@
-import Speaker from 'audio-speaker/stream';
+import Speaker from 'speaker';
 
 export default () =>
-    Speaker({
+    new Speaker({
         channels: 1,
         bitDepth: 16,
         sampleRate: 192000

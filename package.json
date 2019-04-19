@@ -11,9 +11,9 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "audio-speaker": "^1.5.0",
         "fluent-ffmpeg": "^2.1.2",
         "speaker": "^0.4.1",
+        "through2": "^3.0.1",
         "ytdl-core": "^0.29.1"
     },
     "devDependencies": {
