@@ -13,7 +13,6 @@
     "dependencies": {
         "fluent-ffmpeg": "^2.1.2",
         "speaker": "^0.5.1",
-        "through2": "^4.0.2",
         "ytdl-core": "^4.5.0"
     },
     "devDependencies": {

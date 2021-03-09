@@ -1,4 +1,3 @@
-import Through2 from 'through2';
 import Video from './youtube';
 import FFmpeg from './ffmpeg';
 import Speaker from './speaker';
@@ -13,10 +12,9 @@ const play = (url = '') =>
         }
         const duration = +info.videoDetails.lengthSeconds;
         const speaker = Speaker();
-        const stream = Through2();
         const onEnd = () => {
             speaker.close();
-            stream.destroy();
+            // stream.destroy();
             resolve();
         };
         const onFFmpegError = (e) => reject(e);
@@ -24,8 +22,8 @@ const play = (url = '') =>
 
         console.log(`Now Playing ${duration === 0 ? 'live video' : ''} ${info.videoDetails.title}`);
         // console.log(duration);
-        ffmpeg.pipe(stream);
-        stream.pipe(speaker);
+        ffmpeg.pipe(speaker);
+        // stream.pipe(speaker);
         video.on('error', (e) => {
             console.log(e.message);
             reject(e);
