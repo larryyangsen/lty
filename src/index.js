@@ -7,28 +7,26 @@ const play = (url = '') =>
     new Promise(async (resolve, reject) => {
         const { info, video } = await Video(url);
 
-        if (!video) {
+        if (!video || !info) {
             reject();
             return;
         }
-        const duration = +info.length_seconds;
+        const duration = +info.videoDetails.lengthSeconds;
         const speaker = Speaker();
-        const stream = new Through2();
+        const stream = Through2();
         const onEnd = () => {
             speaker.close();
             stream.destroy();
             resolve();
         };
-        const onFFmpegError = e => reject(e);
+        const onFFmpegError = (e) => reject(e);
         const ffmpeg = FFmpeg(video, duration, onEnd, onFFmpegError);
 
-        console.log(
-            `Now Playing ${duration === 0 ? 'live video' : ''} ${info.title}`
-        );
+        console.log(`Now Playing ${duration === 0 ? 'live video' : ''} ${info.videoDetails.title}`);
         // console.log(duration);
         ffmpeg.pipe(stream);
         stream.pipe(speaker);
-        video.on('error', e => {
+        video.on('error', (e) => {
             console.log(e.message);
             reject(e);
         });

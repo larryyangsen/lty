@@ -1,6 +1,7 @@
 import ytdl from 'ytdl-core';
 const ytdlOption = {
-    liveBuffer: 10000
+    liveBuffer: 10000,
+    quality: 'highestaudio',
 };
 export default async (str = '') => {
     if (ytdl.validateURL(str) || ytdl.validateID(str)) {
